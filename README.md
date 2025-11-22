@@ -148,3 +148,81 @@ This program determines whether a given positive integer `n` is abundant.
 - The code returns boolean value True when c>n and returns False when otherwise.
 - also measures elapsed time with 'time.perf_counter' and memory utlised with 'sys.getsizeof'.
 
+# Programme 11:
+Write a function is_deficient(n) that returns True if the sum of proper divisors of n is less than n.
+
+Working and Algorithm:
+
+- A number n is deficient if the sum of its proper divisors (all positive divisors excluding n itself) is strictly less than n.
+  -Example: 8 has proper divisors 1, 2, 4 (sum = 7) → 7 < 8, so 8 is deficient.
+    -12 has proper divisors 1,2,3,4,6 (sum = 16) → 16 ≥ 12, so 12 is not deficient.
+
+1. Handles small inputs:
+   - If n <= 1: proper divisors sum = 0 (so n=1 is deficient).
+2. Computes sum of proper divisors efficiently by iterating i from 1 to sqrt(n):
+   - For each divisor i that divides n:
+     - Add i
+     - If i != 1 and i != n//i (and the paired divisor != n), add paired divisor n//i
+   - Exclude n from the sum (proper divisors only).
+3. Compares the sum with n.
+
+
+# Programme 12:
+Write a function for harshad number is_harshad(n) that checks if a number is divisible by the sum of its digits.
+
+Working and Algorithm:
+
+- A Harshad (or Niven) number is an integer that is divisible by the sum of its decimal digits.
+  - Example: 18 → digits 1 + 8 = 9 and 18 % 9 == 0, so 18 is a Harshad number.
+
+1. Computes the sum of decimal digits of |n|.
+2. If digit sum is 0 (only possible when n == 0)
+   - Define is_harshad(0) = False (or True depending on convention).
+3. Returns (n % digit_sum == 0).
+
+
+# Programme 13:
+Write a function is_automorphic(n) that checks if a number's square ends with the number itself.
+
+Working and Algorithm:
+
+- A number n is automorphic if n^2 ends with the decimal representation of n.
+  - Example: 5 → 5^2 = 25 ends with "5" → automorphic.
+
+1. Computes m = number of digits of n (or modulus = 10^m).
+2. Computes n_squared = n * n.
+3. Checks if n_squared % (10^m) == n.
+
+
+# Programme 14:
+Write a function is_pronic(n) that checks if a number is the product of two consecutive integers.
+
+Working and Algorithm:
+- A pronic number (also called oblong or heteromecic) is a number that is the product of two consecutive integers:
+  n is pronic if there exists an integer k >= 0 such that n = k * (k + 1).
+  - Examples:
+    - 6 = 2 * 3 → pronic
+    - 20 = 4 * 5 → pronic
+
+-  Solves i*(i+1) = n for integer i >= 0.
+- When the quadratic equation i^2 + i gives n then prints true.
+
+# Programme 15:
+Write a function prime_factors(n) that returns the list of prime factors of a number.
+
+Working and Algorithm:
+- prime_factors(n) returns the prime factors of n as a list.
+  - our variant: full factorization with multiplicity, e.g. prime_factors(360) -> [2, 2, 2, 3, 3, 5].
+
+1. Validates input: if n == 0: raise ValueError
+2. Removes factors of 2 in a loop, appending 2 each time.
+3. For odd candidate p starting at 3 and increasing by 2 while p*p <= n:
+   - While n % i == 0:
+     - append i; n //= i.
+4. If remaining n > 1 after the loop, it is prime — append n.
+5. Returns the factors list.
+
+
+
+
+
