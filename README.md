@@ -222,7 +222,206 @@ Working and Algorithm:
 4. If remaining n > 1 after the loop, it is prime — append n.
 5. Returns the factors list.
 
+# Programme 16:
+Write a function count_distinct_prime_factors(n) that returns how many unique prime factors a number has.
 
+Working and Algorithm:
+-A small utility that counts how many distinct prime factors a given integer has.
+
+1. Normalizes input:
+   - Convert to integer (int(n))
+
+2. Handle factor 2:
+   - If n is divisible by 2, increments the distinct-prime counter by 1.
+   - Repeatedly divides n by 2 until it's no longer divisible.
+
+3. Trial division by odd numbers:
+   - For every odd integer f starting at 3 and increasing by 2 while f * f <= n:
+     - If f divides n, you've found a new distinct prime factor:
+       - Increment the counter by 1.
+       - Divide n repeatedly by f until it's no longer divisible.
+   - This ensures each prime factor is counted only once.
+
+4. If after the loop n > 1:
+   - The remaining n is a prime greater than sqrt(original n); count it once.
+
+# Programme 17:
+Write a function is_prime_power(n) that checks if a number can be expressed as pk where p is prime and k ≥ 1.
+
+Working and Algorithm:
+- Given an integer n, decides if there exist a prime p and an integer k >= 1
+such that n = p^k.
+
+- Normalizes and rejects:
+  - Convert to int; if n <= 1 or n < 0, return False (1 is not p^k with k >= 1).
+
+- Factorization by trial division:
+  - Use the standard trial-division approach: iterates p with p raise to the power k in range 2 to n+1.
+  - Returns truw if power == n. Returns false otherwise.
+
+- Decision:
+  - If more than one distinct prime factor is found at any point, n is not a prime power.
+  - If exactly one distinct prime factor remains (possibly after removing all
+    powers), n is a prime power.
+
+ 
+ # Programme 18:
+ Write a function is_mersenne_prime(p) that checks if 2p - 1 is a prime number (given that p is prime).
+
+ Working and Algorithm:
+ 
+ Given an integer p, decide whether M_p = 2^p - 1 is prime. Note: the Lucas–Lehmer test applies only when p itself is prime.
+
+ 1. Normalizes input:
+   - Converts to integer: p = int(p).
+   - If p < 2, returns False (exponent too small).
+
+ 2. Verifies if  p is prime:
+   - Use a fast primality test for p.
+   - If p is composite, M_p cannot be prime, so return False early.
+
+ 3. Lucas–Lehmer test (deterministic for prime exponent p):
+   - If p == 2, M_p = 3 which is prime (return True).
+   - Let n = 2^p - 1.
+   - iterates j in range 2 to sqrt n +1. if n mod j results zero; returns false.
+   - Else returns true.
+   - doesnt run for negative input,
+
+
+# Programme 19:
+Write a function twin_primes(limit) that generates all twin prime pairs up to a given limit.
+
+Working and Algorithm:
+- Given an integer limit, produces all twin-prime pairs (p, p+2) such that both p and p+2 are prime and p+2 <= limit.
+
+ 1. Normalizes input:
+   - Converts the input to int (the provided script uses x.isdigit() then int(x)).
+   - If the integer is <= 2, there are no twin primes -> return [False].
+
+ 2. For each integer i from 2 to limit-2:
+   - Uses trial-division primality test on i.
+   - Uses trial-division primality test on i+2.
+   - If both are prime, records the pair (i, i+2).
+   - For every twin-prime pair (p, p+2) with p+2 <= limit, the loop will reach i == p and record it.
+   - The trial-division primality test is deterministic and correct for integer inputs.
+
+
+# Programme 20:
+Write a function Number of Divisors
+(d(n)) count_divisors(n) that returns how many positive divisors a number has.
+
+Working and Algorithm:
+ -Given a positive integer n, compute the number of positive divisors of n.
+ - Example session
+
+     Input: 28
+
+     Output:
+
+     Number of divisors: 6
+   
+  - Iterates i from 1 to n inclusive.
+  - If n % i == 0, increments count.
+  - Returns count.
+  - checks every possible divisor.
+
+# Programme 21:
+Write a function aliquot_sum(n) that returns the sum of all proper divisors of n (divisors less than n).
+
+Working and Algorithm:
+- Given a (positive) integer n, computes the aliquot sum:
+
+  s(n) = sum_{d | n, 1 <= d < n} d
+
+i.e., the sum of all positive proper divisors of n.
+
+-  1. Initializes sum = 0.
+  2. iterates  i from 1 to n-1:
+       checks if  n % i == 0 and then increments the variable sum by i
+  3. Returns value of sum to the function.
+
+
+# Programme 22:
+Write a function are_amicable(a, b) that checks if two numbers are amicable (sum of proper divisors of a equals b and vice versa).
+
+Working and Algorithm:
+- Provides proper_divisor_sum(n): sum of proper divisors of n (positive integers < n that divide n)
+- Checks if are_amicable(a, b): returns True if a and b form an amicable pair, otherwise False
+-Examples:
+
+  >>> are_amicable(220, 284)
+
+  True
+
+1. Normalizes and validates inputs:
+   - Converts the  inputs to integers (int(a), int(b)). If conversion fails, raises an error.
+   - If either integer <= 0, return False (amicable numbers are positive).
+   - If a == b, return False (perfect numbers are not considered amicable pairs here).
+
+2. Computes the sum of proper divisors:
+   - Computes s(a) = sum of proper divisors of a.
+   - If s(a) != b, returns False immediately (early exit).
+   - Otherwise computes s(b) and checks if s(b) == a.
+  
+
+# Programme 23:
+Write a function multiplicative_persistence(n) that counts how many steps until a number's digits multiply to a single digit.
+
+Working and Algorithm:
+- The multiplicative persistence of a non-negative integer n is the number of times you must multiply the digits of n together until you reach a single-digit number.
+  Example: 39 -> 3*9 = 27 (1 step) -> 2*7 = 14 (2 steps) -> 1*4 = 4 (3 steps) so persistence(39) = 3.
+
+ 1. Reads input n = int(input(...)).
+ 2. Initialize a counter c = 0.
+ 3. While n >= 10 (i.e., n has at least two digits):
+   a. Convert n to its decimal string representation.
+   b. Computes the product p of all digits: iterates each character d in str(n) and multiplies p *= int(d).
+   c. Sets n = p and increments c.
+ 4. Returns c (the persistence count)
+- Each loop computes the exact product of digits with integer arithmetic; repeated application follows the definition.
+- The loop terminates because eventually the process reaches a single-digit number (0..9), at which point n < 10 and the loop stops.
+
+
+# Programme 24:
+Write a function is_highly_composite(n) that checks if a number has more divisors than any smaller number.
+
+Working and Algorithm:
+- the programme checks whether a given positive integer n is a highly composite number (HCN).
+- According to the usual definition: n is highly composite if the number of positive divisors of n is strictly greater than the number of divisors of any smaller positive integer.
+
+   1. For each integer i from 1 to n-1:
+       - Computes d(i) by testing all potential divisors j from 1 to i:
+
+         computes d(i) = sum(1 for j in 1..i if i % j == 0)
+       - Tracks max_divisors = max(max_divisors, d(i))
+  2. Computes d(n) similarly by testing divisors 1..n.
+  3. Returns d(n) > max_divisors.
+
+
+# Programme 25:
+Write a function for Modular Exponentiation mod_exp(base, exponent, modulus) that efficiently calculates (baseexponent) % modulus.
+
+Working and Algorithm:
+ The function mod_exp(n1, n2, n3) implements the standard iterative binary exponentiation:
+  - It first reduces the base modulo n3 (n1 = n1 % n3).
+  - Repeatedly squares the base and, when the current exponent bit is 1, multiplies the result by the base (mod n3).
+  -   Example session
+     Enter the base: 4
+
+      enter the exponent: 13
+ 
+      enter the modulus: 497
+
+      result:  445
+
+  - The algorithm maintains the invariant:
+
+    base_original^exponent = result * base^(e) (mod modulus)
+
+    where `e` is the remaining exponent. Each step either consumes a 1-bit of e by multiplying result by base, or squares base and halves e. This correctly computes base_original^exponent mod modulus.
+
+
+      
 
 
 
