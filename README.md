@@ -643,4 +643,98 @@ Working and Algorithm:
 # Programme 37:
 Implement pollard_rho(n) for integer factorization using Pollard's rho algorithm.
 
+Working and Algorithm:
+1. Primality Test(is_prime(n))
+   - Goal: Efficiently determines if n is prime.
+   - Method: Miller-Rabin Strong Pseudoprime Test preceded by Trial Division by small primes.
+   - Steps:
+      - Handles small n and check for divisibility by small primes (2, 3, 5, ..., 29).
+      - Decomposes n - 1 = 2^s*d where d is odd.
+      - For fixed bases a = (2, 7, 61), checks:
+      - If a^d ==1 (mod n) or a^{2^i d}== -1 (mod n) for some i in [0, s-1].
+      - If the condition holds for all bases, n is considered Prime; otherwise, it is Composite.
+        
+2. Pollard's Rho Factorization (pollard_rho(n)):
+   - Goal: Find a non-trivial factor d of a composite number n.
+   - Method: Floyd's Cycle-Finding Algorithm applied to a modular function f(x) = (x^2 + 1)(mod n).
+   - Steps:
+      - Initializes pointers x becomes 2 (tortoise) and y becomes 2 (hare).
+      - Loop until a factor d > 1 is found:
+         - Advance x by one step: x becomes f(x).
+         - Advance y by two steps: y becomes f(f(y)).
+         - Calculates the potential factor d becomes gcd(|x - y|, n).Returns d (a non-trivial factor of n).
+         
+3. Recursive Factorization (factor(n))
+   - Goal: Print all prime factors of n.
+   - Method: Divide and Conquers using the pollard_rho(n) output.
+   - Steps:
+      - Base Case: If n=1, stop.
+      -  If n is Prime, print n and stop.
+      -  Recursive Step: Find a factor f = pollard_rho(n).
+      -  Recursively call factor(n) and $\text(factor (n // f)).
+ -  Helper Function: Modular Exponentiation (mod_pow(x, n, m))
+      -  Goal: Calculate x^n (mod n).
+      -  Method: Exponentiation by Squaring. Computes the result by repeatedly squaring the base and multiplying only when the corresponding bit in the exponent is set.
+
+
+# Programme 38:
+Write a function zeta_approx(s, terms) that approximates the Riemann zeta function ζ(s) using the first 'terms' of the series.
+
+Working and Algorithm:
+1. Input Validation Check:
+    - If the term limit N <= 0, returns 0.0.
+
+2. Alternating Series Summation :
+    -Initialization:
+      - alt_sum stores 0.0 (Stores the sum of the Dirichlet Eta Function).
+      - idx stores 1 (The current term number, k).
+      - sign stores 1.0 (The alternating sign, (-1)^{k-1}).
+      - inv_s stores s (The exponent)
+    - Loop (Summation):
+       - Starts a while loop that continues as long as idx <= N:
+       - Calculates Term: Computes the current term: sign/idx^s.
+       - Accumulates: Add the term to the alternating sum: alt_sum stores (alt\_sum + (sign/{idx}^s)) .
+       - Advance: Increments the index with idx + 1.
+       - Flip Sign: Inverts the sign for the next term: sign stores (-sign).
+
+ 3.  Acceleration Factor Calculation:\
+     - This step converts the calculated sum of the Dirichlet Eta Function (the alternating series, eta(s)) into the value of the standard Riemann Zeta Function (zeta(s)).
+     - The relationship used is: zeta(s) = (eta(s))/(1 - 2^(1-s))
+     - Calculates Scale Factor: scale stores 1.0/(1.0 - 2^(1-s)).
+ 
+ 4. Final Result Calculate:
+    - the final approximation: zeta_approx stores alt_sum * scale.
+    - Returns  zeta_approx.
+
+
+# Programme 39:
+Write a function Partition Function p(n) partition_function(n) that calculates the number of distinct ways to write n as a sum of positive integers.
+
+Working and Algorithm:
+- Partition Function Algorithm (Euler's Method)The algorithm calculates p(n), the number of ways n can be written as a sum of positive integers, where the order of the summands doesn't matter.
+
+1. Initialization Input Validation:
+   - If the input n (nv) is less than 0, returns 0.
+   - Dynamic Programming Array: Creates an array arr of size n+1 to store the calculated partition values p(0) through p(n).
+   - Initializes that  p(0) stores 1 (since there is one way to partition zero: the empty sum).
+   - All other entries are initialized to 0.
+
+2. Iterative Calculation (p(i)):
+   - The algorithm calculates p(i) for i=1 up to n , using the previously computed values p(0), p(1),..., p(i-1).
+   - Outer Loop:
+       - Iterates i from 1 to n.
+
+3. Inner Loop (Applying Euler's Theorem)
+    - The core calculation for p(i) uses the recurrence relation derived from Euler's Pentagonal Number Theorem:
+        - p(i) = sumation formula for  generalized pentagonal numbers.
+        - Inner Loop: For the current i, calculates the sum s by iterating through k=1, 2, 3,...:
+        - Calculates Generalized Pentagonal Numbers: g_1 stores (k(3k - 1))/2} and g_2 stores (k(3k + 1))/2
+        - checks Bounds: If g_1 > i and g_2 > i, breaks the loop, as all subsequent terms will be negative indices.
+        - Determines Sign: The sign is determined by k: (-1)^{k-1}.
+        - Accumulates Sum:If g_1 <= i: Add the term p(i - g_1) to s.
+        - If g_2 <= i: Add the term  p(i - g_2) to s.
+        - Increments k.
+        - Stores Result: Set p(i) stores s (i.e., arr[i] stores s).
+        
+4. Termination: After the outer loop completes, returns arr[n], which holds p(n).
 
