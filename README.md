@@ -418,10 +418,229 @@ Working and Algorithm:
 
     base_original^exponent = result * base^(e) (mod modulus)
 
-    where `e` is the remaining exponent. Each step either consumes a 1-bit of e by multiplying result by base, or squares base and halves e. This correctly computes base_original^exponent mod modulus.
+    where e is the remaining exponent. Each step either consumes a 1-bit of e by multiplying result by base, or squares base and halves e. This correctly computes base_original^exponent mod modulus.
 
 
+ # Programme 26:
+  Write a function Modular Multiplicative Inverse mod_inverse(a, m) that finds the number x such that (a * x) ≡ 1 mod m.
+
+  Working and Algorithm:
+  -This code calculates the modular multiplicative inverse of an integer $a$ modulo $m$ using the Extended Euclidean Algorithm. It also measures the execution time and approximate memory usage of the          calculation.
+  
+  -The values are normalized:  a (mod m) to a.
+  -The remainder sequence is initialized: (r_0, r_1) = (m, a).
+  -The coefficient sequence is initialized: (s_0, s_1) = (0, 1). 
+  -Iterative Calculation (Euclidean Algorithm):
+    The loop continues as long as the current remainder r_1 is not zero.
+    In each step, the quotient q is calculated: q = r_0 // r_1.
+  -The new remainders and coefficients are calculated simultaneously using the division step.
+  -When the loop terminates, r_0 holds the gcd(a, m).
+  -Checks for Inverse: If r_0 is not equal to 1, the GCD is greater than 1, and the inverse does not exist. The function returns None.
+  -Calculates Inverse: If r_0 = 1, the value s_0 is the coefficient s from Bézout's identity. The final modular inverse is calculated as s_0(mod m). Since s_0 might be negative, the modulo operation ensures the result is a positive integer in the range [0, m-1].    
+
+
+# Programme 27: 
+Write a function chinese Remainder Theorem Solver crt(remainders, moduli) that solves a system of congruences x ≡ ri mod mi.
+
+Working and Algorithm:
+
+The function crt(x_remainders, y_moduli) uses the standard constructive proof for the Chinese Remainder Theorem to find a unique solution x to a system of congruences.
+ - The overall goal is to find the unique $ that satisfies the system, where the solution is unique modulo M = m_1*m_2*....*m_k.
+
+
+-The algorithm proceeds in three main steps:
+
+ 1. Calculation of Total Modulus (M)
+
+  The total modulus M is calculated as the product of all individual moduli. This is the value modulo which the final answer will be unique.
+
+ 2. Iterative Summation
+
+ The script iterates through each congruence (r_i, m_i) and computes one component of the solution.
+
+ For each pair (r, m):
+
+ a.  Calculate M_i: The partial product M_i is computed by dividing the total modulus M by the current modulus m_i:
+
+ b.  Calculate Modular Inverse (M_i^inv): The modular multiplicative inverse of M_i modulo m is found. The algorithm uses the efficient built-in function pow(Mi, -1, m). This inverse ensures that the component term M_i*M_i^inv satisfies the conditions:
+ c.  Accumulate Total: The complete term r*M_i* M_i^inv is added to a running total.
+
+3. Final Result
+-Once all components are summed, the total is reduced modulo M to get the final, smallest non-negative integer solution x.
+
+
+# Programme 28:
+Write a function Quadratic Residue Check is_quadratic_residue(a, p) that checks if x2 ≡ a mod p has a solution.
+
+Working and Algorithm:
+-An integer a is a quadratic residue modulo p if there exists some integer x such that:
+
+  x^2 == mod p
+
+  If no such x exists, a is called a quadratic non-residue.
+
+  1. Input Validation Check if p is an odd prime. If p<= 2 , raise an error or return an invalid indicator, as Euler's Criterion requires p to be an odd prime.
+  2. Reduces a :
+
+     Calculate the remainder of a when divided by p: a (mod p) to a . This ensures 0 <= a < p.
+     
+  3.Checks for the Trivial Case: (a == 0 (mod p):
+   
+   If a == 0, then a == 0 (mod p). Since x^2 == 0 (mod p) has a solution (x=0), a is a quadratic residue.Therefore Returns True.
+  4. Applies Euler's Criterion:
+  
+   Calculates the value of the Legendre Symbol exponent: E = p-1/2.
+ 
+   Computes the Euler's Criterion Result (R) using modular exponentiation: R = a^E*mod{p} = a^ (p-1)/2 * (mod p)
+  5. Determines Residue StatusCheck the value of R:
+   
+   -If R = 1: According to Euler's Criterion, a is a quadratic residue modulo p. Returns True.
+   -If R = p - 1 : According to Euler's Criterion, a is a quadratic non-residue modulo p.Returns False.
+   - Otherwise, something is wrong with the input or calculation, but for a correct odd prime p and a != 0 (mod p), the result must be either 1 or p-1. In the context of the provided code, any other result also leads to False.
+
+
+# Programme 29:
+Write a function order_mod(a, n) that finds the smallest positive integer k such that ak ≡ 1 mod n.
+
+Working and Algorithm:
+-The algorithm relies on the property that the powers of a modulo n must eventually repeat, forming a cycle. Specifically, since gcd(a, n) = 1, the sequence a^1, a^2, a^3,...modulo n must contain 1.
+- Calculates the Greatest Common Divisor (gcd) of a and n.
+- The loop iteratively computes the sequence of modular powers:
+- a mod(n), a^2 mod(n),  a^3 mod(n),......
+- It stops the moment the computed value v equals 1. Because k is incremented sequentially, the value of k at termination is guaranteed to be the smallest positive integer that satisfies the congruence a^k== 1 mod(n).
+- This iterative search is guaranteed to find the order because by Euler's Totient Theorem, a^phi(n) == 1 mod(n)
+- since gcd(a, n)= 1, which ensures that 1 is eventually reached within at most phi(n) steps.
+
+
+# Programme 30:
+Write a function Fibonacci Prime Check is_fibonacci_prime(n) that checks if a number is both Fibonacci and prime.
+
+Working and Algorithm:
+- The code acts as a combined mathematical property checker:
+- It first validates the input (n >= 2).
+- It uses the perfect square property for a rapid check of Fibonacci membership .A positive integer n is a Fibonacci number if and only if either 5n^2 + 4 or 5n^2 - 4 is a perfect square.
+- It uses trial division for a rapid check of primality.
+- It returns True only if both independent checks pass.
+- For example, if n=5 (a Fibonacci number and a prime), both checks pass. If n=8 (a Fibonacci number but not a prime), the prime_check fails.
+- If n=7 (a prime but not a Fibonacci number), the fib_check fails.
+
+
+# Programme 31:
+Write a function Lucas Numbers Generator lucas_sequence(n) that generates the first n Lucas numbers (similar to Fibonacci but starts with 2,
+
+
+Working and Algorithm:
+- This algorithm generates and prints the first $n$ terms of the Lucas sequence. The Lucas sequence, often denoted $L_k$, is a sequence of integers defined by the same recurrence relation as the Fibonacci sequence, but with different starting values.
+
+1. Defines Starting Values: Initialize two variables to hold the first two terms of the Lucas sequence:
+   - L_0 (current term, denoted a in the code) = 2.
+   - L_1 (next term, denoted b in the code) = 1.
+
+2. Iterative Generation: Starts a loop that iterates n times (for i from 0 to n-1).
+   - Inside the loop:
+      - Output Current Term: Prints the value of the current term (a).
+      - Calculates the Next Term: The Lucas sequence follows the recurrence relation L_(k+2) = L_(k+1) + L_k.
+      - Calculates the value of the new next term (a+b).Store the current value of b as the new current term L_(k+1) becomes L_k.
+      -Stores the calculated sum (a+b) as the new next term (L_(k+2) becomes L_(k+1)).This is done simultaneously: a == b and b == a + b (using the old value of a).
+
+ 3.  Termination After the loop finishes n iterations, the process stops.
+
+
+# Programme 32:
+Write a function for Perfect Powers Check is_perfect_power(n) that checks if a number can be expressed as ab where a > 0 and b > 1.
+
+Working and Algorithm:
+1.  Outer Loop (Testing the Base a):
+    - Iterates the potential base a starting from 2 up to (but not including) n.
+    - Rationale: If n = a^k, then a must be less than n.
+    
+2. Inner Loop (Generating and Testing Powers a^k)
+   - Initialization: Inside the outer loop, initializes the current power p to a^2 (p becomes a*a).
+   -  This represents a^k where k=2.
+   -  Loop Condition: Starts a while loop that continues as long as the current power p is less than or equal to n.
+   -  Check for Match: If the current power p equals n):
+        - n is a perfect power (n = a^2 or n=a^k for a higher power).Returns True immediately.
+   - Calculates the Next Power: Updates p to the next power of a:( p becomes  p*a). This is equivalent to calculating a^{k+1}.
+
+ 
+3. Termination: If the outer loop completes without finding any base a and exponent k >= 2 such that a^k = n :Returns False.
+
+
+# Programme 33:
+Write a function Collatz Sequence Length collatz_length(n) that returns the number of steps for n to reach 1 in the Collatz conjecture.
+
+Working and Algorithm:
+-The algorithm's behavior is entirely governed by the Collatz Conjecture, which states that for any starting positive integer n, the sequence generated by these rules will eventually reach the number 1. The script relies on this conjecture to guarantee termination.
+
+1.  Initialization:
+     - Initializes the step counter c to 0. This variable will track the length of the sequence.
+
+2. Iterative Application (Collatz Rules):
+    - Starts a while loop that continues as long as n!=1.
+    - Inside the loop:
+        - Checks for Even: Determines if n is even n(mod2) = 0. If True (n is even): Applies the first Collatz rule: n becomes n/2 (Integer division is used: n //= 2)
+        - If False (n is odd): Apply the second Collatz rule:n becomes 3n + 1
+    - Increment Counter: Increases the step counter by one: c becomes  c + 1.
+
+3. Termination:
+    - When the loop condition n != 1  is no longer met (i.e., n has reached 1), the value of c is the sequence length.Returns c.
+
+
+# Programme 34:
+Write a function Polygonal Numbers polygonal_number(s,n) that returns the n-th s-gonal number.
+
+Working and Algorithm:
+- The formula used, P(s, n) = ((s - 2)n^2 - (s - 4)n)/2 , is derived from summing an arithmetic progression. It represents the number of points in a pattern of nested, regular s-sided polygons, where the n-th polygon has sides composed of n points.
+
+- The algorithm exhibits constant time complexity because it performs a fixed number of basic arithmetic operations (subtraction, multiplication, addition, division) regardless of the size of the inputs s or n.
+- It involves no loops or recursive calls, making it extremely fast for calculating any single term P(s, n).
+- The use of integer division (//) is appropriate since polygonal numbers are always integers.
+- Example to find the 5th pentagonal number (s=5, n=5): P(5, 5) = ((5 - 2)*5^2 - (5 - 4)*5}/2
+   - P(5, 5) = {3*25 - 1*5}/2
+   - P(5, 5) = {75 - 5}/2 = 70/2 = 35
+   - The algorithm performs these steps directly, resulting in the number 35.
+
+
+#Programme 35:
+Write a function Carmichael Number Check is_carmichael(n) that checks if a composite number n satisfies an−1 ≡ 1 mod n for all a coprime to n.
+
+Working and Algorithm:
+- A Carmichael number is a composite number n which satisfies the modular arithmetic congruence relation a^{n-1}== 1 (mod{n}) for all integers a such that gcd(a, n) = 1. These numbers are also known as Fermat pseudoprimes to every base a coprime to n.
+  
+- Initial Check: If n < 3 or n is prime (is_prime(n) is True), n cannot be a Carmichael number (which must be composite).Return False.
+- Iterative Base Test: Iterates through all potential bases a from 2 up to n-1.
+- Check Coprimality: For the current base a, calculates g = gcd(a, n).If g = 1, proceed to the Fermat test.
+- Fermat Test: Calculates R = a^{n-1} (mod{n}) using mod_pow(a, n - 1, n).
+- Tests Condition: If R != 1:
+    - n fails the test for base a, so it is not a Carmichael number. Returns False immediately.
+    - Final Result: If the loop completes for all a (meaning a^(n-1)== 1 (mod n ) for all gcd(a, n)=1): Returns True.
+
+
+# Programme 36:
+Implement the probabilistic Miller-Rabin test is_prime_miller_rabin(n, k) with k rounds.
+
+Working and Algorithm:
+- This algorithm is a probabilistic test (specifically, a strong pseudoprime test) that efficiently determines whether a large number $n$ is likely prime. When tested against a sufficient set of bases, the test becomes deterministic for numbers below certain bounds.
+
+1. Trivial Checks: Handles small and even numbers:
+    - If n < 2, returns false.
+    - If n is 2 or 3, returns true .
+    - If n is even, returns false.
+
+2. Factorization of n-1:
+    - Decompose n - 1 into 2^s*d, where d is an odd integer.
+    - Initializes d becomes  n - 1 and s becomes 0.
+    - While d is even: d becomes d // 2  and s becomes s + 1.
       
+3. Base Testing:
+    - Iterates through a set of fixed test bases a: (2, 7, 61).
+    - For each base a:If a >= n , skip (bases must be less than n).
+    - Run the Core Test:
+         - Call check(a, d, n, s).If the check function returns False for any base, n is definitely composite.Returns False immediately.
+    - Conclusion: If n passes the test for all specified bases, it is considered prime (or a very rare strong pseudoprime).Returns True.
+  
 
+# Programme 37:
+Implement pollard_rho(n) for integer factorization using Pollard's rho algorithm.
 
 
